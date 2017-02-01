@@ -42,8 +42,10 @@ public class Oauth2Configuration {
 
         @Override
         public void configure(ResourceServerSecurityConfigurer resourceServerSecurityConfigurer) throws Exception {
+            TokenExtractorConfiguration tokenExtractorConfiguration = new TokenExtractorConfiguration();
             resourceServerSecurityConfigurer
-                    .resourceId(RESOURCE_ID);
+                    .resourceId(RESOURCE_ID)
+                    .tokenExtractor(tokenExtractorConfiguration);
         }
 
         @Override
