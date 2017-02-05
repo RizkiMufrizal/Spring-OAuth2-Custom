@@ -47,8 +47,8 @@ Jika berhasil maka akan muncul access token dan refresh seperti berikut.
 ## Teknologi
 
 * Spring Boot
-* Spring Data MongoDB
-* Spring JDBC
+* Spring Data JPA
 * Spring Security
 * Spring OAuth2
+* Spring JWT
 * HikariCP
