@@ -56,11 +56,11 @@ public class ScheduledTaskConfiguration {
         connection = dataSource.getConnection();
 
         preparedStatementSelectUser = connection.prepareStatement(selectTableUserSQL);
-        preparedStatementSelectUser.setString(1, "administrator");
+        preparedStatementSelectUser.setString(1, "admin");
         ResultSet resultSetUser = preparedStatementSelectUser.executeQuery();
 
         preparedStatementSelectUserRole = connection.prepareStatement(selectTableUserRoleSQL);
-        preparedStatementSelectUserRole.setString(1, "administrator");
+        preparedStatementSelectUserRole.setString(1, "admin");
         ResultSet resultSetUserRole = preparedStatementSelectUserRole.executeQuery();
 
         preparedStatementSelectOAuthClientDetails = connection.prepareStatement(selectTableOAuthClientDetailSQL);
