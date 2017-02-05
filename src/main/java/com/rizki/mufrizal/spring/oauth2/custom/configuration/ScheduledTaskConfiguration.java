@@ -34,6 +34,7 @@ public class ScheduledTaskConfiguration {
 
     private PreparedStatement preparedStatementSelectUser;
     private PreparedStatement preparedStatementSelectUserRole;
+    private PreparedStatement preparedStatementSelectOAuthClientDetails;
 
     private PreparedStatement preparedStatementInsertUser;
     private PreparedStatement preparedStatementInsertUserRole;
@@ -41,6 +42,7 @@ public class ScheduledTaskConfiguration {
 
     private final String selectTableUserSQL = "SELECT * FROM tb_user WHERE username = ?";
     private final String selectTableUserRoleSQL = "SELECT * FROM tb_user_role WHERE username = ?";
+    private final String selectTableOAuthClientDetailSQL = "SELECT * FROM oauth_client_details WHERE client_id = ?";
 
     private final String insertTableUserSQL = "INSERT INTO tb_user(username, password, is_active) values(?, ?, ?)";
     private final String insertTableUserRoleSQL = "INSERT INTO tb_user_role(user_role_id, role, username) values(?, ?, ?)";
@@ -61,20 +63,27 @@ public class ScheduledTaskConfiguration {
         preparedStatementSelectUserRole.setString(1, "administrator");
         ResultSet resultSetUserRole = preparedStatementSelectUserRole.executeQuery();
 
-        preparedStatementInsertOAuthClientDetails = connection.prepareStatement(insertTableOAuthClientDetailsSQL);
-        preparedStatementInsertOAuthClientDetails.setString(1, "clientid");
-        preparedStatementInsertOAuthClientDetails.setString(2, "customoauth2");
-        preparedStatementInsertOAuthClientDetails.setString(3, "secret");
-        preparedStatementInsertOAuthClientDetails.setString(4, "read,write");
-        preparedStatementInsertOAuthClientDetails.setString(5, "password,client_credentials,refresh_token");
-        preparedStatementInsertOAuthClientDetails.setString(6, " ");
-        preparedStatementInsertOAuthClientDetails.setString(7, " ");
-        preparedStatementInsertOAuthClientDetails.setInt(8, 3600);
-        preparedStatementInsertOAuthClientDetails.setInt(9, 3600);
-        preparedStatementInsertOAuthClientDetails.setString(10, " ");
-        preparedStatementInsertOAuthClientDetails.setBoolean(11, Boolean.TRUE);
-        preparedStatementInsertOAuthClientDetails.executeQuery();
-        preparedStatementInsertOAuthClientDetails.close();
+        preparedStatementSelectOAuthClientDetails = connection.prepareStatement(selectTableOAuthClientDetailSQL);
+        preparedStatementSelectOAuthClientDetails.setString(1, "clientid");
+        ResultSet resultOAuthClientDetails = preparedStatementSelectOAuthClientDetails.executeQuery();
+
+        if (!resultOAuthClientDetails.next()) {
+            preparedStatementInsertOAuthClientDetails = connection.prepareStatement(insertTableOAuthClientDetailsSQL);
+            preparedStatementInsertOAuthClientDetails.setString(1, "clientid");
+            preparedStatementInsertOAuthClientDetails.setString(2, "customoauth2");
+            preparedStatementInsertOAuthClientDetails.setString(3, "secret");
+            preparedStatementInsertOAuthClientDetails.setString(4, "read,write");
+            preparedStatementInsertOAuthClientDetails.setString(5, "password,client_credentials,refresh_token");
+            preparedStatementInsertOAuthClientDetails.setString(6, " ");
+            preparedStatementInsertOAuthClientDetails.setString(7, " ");
+            preparedStatementInsertOAuthClientDetails.setInt(8, 3600);
+            preparedStatementInsertOAuthClientDetails.setInt(9, 3600);
+            preparedStatementInsertOAuthClientDetails.setString(10, " ");
+            preparedStatementInsertOAuthClientDetails.setBoolean(11, Boolean.TRUE);
+            preparedStatementInsertOAuthClientDetails.executeUpdate();
+            
+            preparedStatementInsertOAuthClientDetails.close();
+        }
 
         if (!resultSetUser.next() && !resultSetUserRole.next()) {
             preparedStatementInsertUser = connection.prepareStatement(insertTableUserSQL);
