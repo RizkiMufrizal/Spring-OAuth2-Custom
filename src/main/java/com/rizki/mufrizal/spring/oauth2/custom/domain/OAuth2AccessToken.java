@@ -25,7 +25,7 @@ public class OAuth2AccessToken implements Serializable {
     @Column(name = "token_id")
     private String tokenId;
 
-    @Column(name = "token")
+    @Column(name = "token", columnDefinition = "BLOB")
     private byte[] token;
 
     @Column(name = "authentication_id")
@@ -37,7 +37,7 @@ public class OAuth2AccessToken implements Serializable {
     @Column(name = "client_id")
     private String clientId;
 
-    @Column(name = "authentication")
+    @Column(name = "authentication", columnDefinition = "BLOB")
     private byte[] authentication;
 
     @Column(name = "refresh_token")

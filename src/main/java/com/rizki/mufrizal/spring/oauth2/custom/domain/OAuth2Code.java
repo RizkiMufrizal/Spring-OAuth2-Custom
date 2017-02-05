@@ -31,7 +31,7 @@ public class OAuth2Code implements Serializable {
     @Column(name = "code")
     private String code;
 
-    @Column(name = "authentication")
+    @Column(name = "authentication", columnDefinition = "BLOB")
     private byte[] authentication;
 
     /**

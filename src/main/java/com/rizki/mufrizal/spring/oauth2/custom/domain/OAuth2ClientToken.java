@@ -25,7 +25,7 @@ public class OAuth2ClientToken implements Serializable {
     @Column(name = "token_id", nullable = false)
     private String tokenId;
 
-    @Column(name = "token")
+    @Column(name = "token", columnDefinition = "BLOB")
     private byte[] token;
 
     @Column(name = "authentication_id")

@@ -25,10 +25,10 @@ public class OAuth2RefreshToken implements Serializable {
     @Column(name = "token_id")
     private String tokenId;
 
-    @Column(name = "token")
+    @Column(name = "token", columnDefinition = "BLOB")
     private byte[] token;
 
-    @Column(name = "authentication")
+    @Column(name = "authentication", columnDefinition = "BLOB")
     private byte[] authentication;
 
     /**
