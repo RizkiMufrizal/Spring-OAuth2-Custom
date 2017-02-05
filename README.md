@@ -11,7 +11,7 @@
 * Untuk mendapatkan access token, kita perlu menukarkan client id dan client secrent dengan perintah
 
 ```
-curl -X POST -vu fooClientIdPassword:secret http://localhost:8080/oauth/token -H "Accept: application/json" -d "client_id=fooClientIdPassword&grant_type=client_credentials"
+curl -X POST -vu clientid:secret http://localhost:8080/oauth/token -H "Accept: application/json" -d "client_id=clientid&grant_type=client_credentials"
 ```
 
 Jika berhasil maka akan muncul access token seperti berikut.
@@ -30,7 +30,7 @@ Jika berhasil maka akan muncul access token seperti berikut.
 * untuk flow ini kita menggunakan username, password, client id dan client secret untuk mendapatkan access token dan refresh token
 
 ```
-curl -X POST -vu fooClientIdPassword:secret http://localhost:8080/oauth/token -H "Accept: application/json" -d "password=admin&username=admin&grant_type=password&client_secret=secret&client_id=fooClientIdPassword"
+curl -X POST -vu clientid:secret http://localhost:8080/oauth/token -H "Accept: application/json" -d "password=admin&username=admin&grant_type=password&client_secret=secret&client_id=clientid"
 ```
 
 Jika berhasil maka akan muncul access token dan refresh seperti berikut.
