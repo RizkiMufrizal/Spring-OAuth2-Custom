@@ -2,17 +2,12 @@ package com.rizki.mufrizal.spring.oauth2.custom.configuration;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
-import org.springframework.jdbc.datasource.init.DataSourceInitializer;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 /**
  *
@@ -32,12 +27,6 @@ public class DataSourceConfiguration {
     @Autowired
     private Environment environment;
 
-    @Value("classpath:schema.sql")
-    private Resource schemaScript;
-
-    @Value("classpath:data.sql")
-    private Resource dataScript;
-
     @Bean(destroyMethod = "close")
     public DataSource dataSource() {
         HikariConfig dataSourceConfig = new HikariConfig();
@@ -55,20 +44,5 @@ public class DataSourceConfiguration {
         dataSourceConfig.addDataSourceProperty("prepStmtCacheSize", "250");
         dataSourceConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         return new HikariDataSource(dataSourceConfig);
-    }
-
-    private DatabasePopulator databasePopulator() {
-        final ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
-        resourceDatabasePopulator.addScript(schemaScript);
-        resourceDatabasePopulator.addScript(dataScript);
-        return resourceDatabasePopulator;
-    }
-
-    @Bean
-    public DataSourceInitializer dataSourceInitializer(final DataSource dataSource) {
-        final DataSourceInitializer initializer = new DataSourceInitializer();
-        initializer.setDataSource(dataSource);
-        initializer.setDatabasePopulator(databasePopulator());
-        return initializer;
     }
 }
