@@ -31,7 +31,7 @@ import org.springframework.security.web.access.channel.ChannelProcessingFilter;
  *
  */
 @Configuration
-public class Oauth2Configuration {
+public class OAuth2Configuration {
 
     private static final String RESOURCE_ID = "customoauth2";
 
