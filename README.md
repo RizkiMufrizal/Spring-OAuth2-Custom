@@ -2,8 +2,7 @@
 
 ## Cara Menjalankan :
 
-* jalankan database mongodb
-* database h2 berfungsi untuk menyimpan data - data client id dan client secret
+* jalankan database mariadb
 * kemudian jalankan aplikasi dengan perintah `mvn clean spring-boot:run`
 
 ## Flow Client Credentials
