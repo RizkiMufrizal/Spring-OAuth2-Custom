@@ -1,5 +1,7 @@
 package com.rizki.mufrizal.spring.oauth2.custom.configuration;
 
+import com.rizki.mufrizal.spring.oauth2.custom.service.OAuth2AccessTokenService;
+import com.rizki.mufrizal.spring.oauth2.custom.service.OAuth2CountAccessService;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,9 +41,15 @@ public class OAuth2Configuration {
     @EnableResourceServer
     protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
+        @Autowired
+        private OAuth2CountAccessService oAuth2CountAccessService;
+
+        @Autowired
+        private OAuth2AccessTokenService oAuth2AccessTokenService;
+
         @Override
         public void configure(ResourceServerSecurityConfigurer resourceServerSecurityConfigurer) throws Exception {
-            TokenExtractorConfiguration tokenExtractorConfiguration = new TokenExtractorConfiguration();
+            TokenExtractorConfiguration tokenExtractorConfiguration = new TokenExtractorConfiguration(oAuth2CountAccessService, oAuth2AccessTokenService);
             resourceServerSecurityConfigurer
                     .resourceId(RESOURCE_ID)
                     .tokenExtractor(tokenExtractorConfiguration);
