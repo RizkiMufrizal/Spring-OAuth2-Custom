@@ -3,17 +3,15 @@ package com.rizki.mufrizal.spring.oauth2.custom.controller;
 import com.rizki.mufrizal.spring.oauth2.custom.domain.Mahasiswa;
 import com.rizki.mufrizal.spring.oauth2.custom.service.MahasiswaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.Resources;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -28,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController
+@RequestMapping(value = "/api")
 public class MahasiswaController {
 
     @Autowired
@@ -35,20 +34,14 @@ public class MahasiswaController {
 
     @GetMapping(value = "/mahasiswas")
     @CrossOrigin
-    public HttpEntity<Resources<Mahasiswa>> getMahasiswas(Pageable pageable) {
-        Resources<Mahasiswa> mahasiswas = new Resources<>(mahasiswaService.getMahasiswas(pageable));
-        mahasiswas.add(linkTo(methodOn(MahasiswaController.class).getMahasiswas(pageable)).withSelfRel());
-
-        return new ResponseEntity<>(mahasiswas, HttpStatus.OK);
+    public HttpEntity<Page<Mahasiswa>> getMahasiswas(Pageable pageable) {
+        return new ResponseEntity<>(mahasiswaService.getMahasiswas(pageable), HttpStatus.OK);
     }
 
     @GetMapping(value = "/mahasiswas/{idMahasiswa}")
     @CrossOrigin
-    public HttpEntity<Resource<Mahasiswa>> getMahasiswa(@PathVariable("idMahasiswa") String idMahasiswa) {
-        Resource<Mahasiswa> mahasiswa = new Resource<>(mahasiswaService.getMahasiswa(idMahasiswa));
-        mahasiswa.add(linkTo(methodOn(MahasiswaController.class).getMahasiswa(idMahasiswa)).withSelfRel());
-
-        return new ResponseEntity<>(mahasiswa, HttpStatus.OK);
+    public HttpEntity<Mahasiswa> getMahasiswa(@PathVariable("idMahasiswa") String idMahasiswa) {
+        return new ResponseEntity<>(mahasiswaService.getMahasiswa(idMahasiswa), HttpStatus.OK);
     }
 
 }

@@ -3,17 +3,15 @@ package com.rizki.mufrizal.spring.oauth2.custom.controller;
 import com.rizki.mufrizal.spring.oauth2.custom.domain.Peminjaman;
 import com.rizki.mufrizal.spring.oauth2.custom.service.PeminjamanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.Resources;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -28,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController
+@RequestMapping(value = "/api")
 public class PeminjamanController {
 
     @Autowired
@@ -35,20 +34,14 @@ public class PeminjamanController {
 
     @GetMapping(value = "/peminjamans")
     @CrossOrigin
-    public HttpEntity<Resources<Peminjaman>> getPeminjamans(Pageable pageable) {
-        Resources<Peminjaman> peminjamans = new Resources<>(peminjamanService.getPeminjamans(pageable));
-        peminjamans.add(linkTo(methodOn(PeminjamanController.class).getPeminjamans(pageable)).withSelfRel());
-
-        return new ResponseEntity<>(peminjamans, HttpStatus.OK);
+    public HttpEntity<Page<Peminjaman>> getPeminjamans(Pageable pageable) {
+        return new ResponseEntity<>(peminjamanService.getPeminjamans(pageable), HttpStatus.OK);
     }
 
     @GetMapping(value = "/peminjamans/{idPeminjaman}")
     @CrossOrigin
-    public HttpEntity<Resource<Peminjaman>> getPeminjaman(@PathVariable("idPeminjaman") String idPeminjaman) {
-        Resource<Peminjaman> peminjaman = new Resource<>(peminjamanService.getPeminjaman(idPeminjaman));
-        peminjaman.add(linkTo(methodOn(PeminjamanController.class).getPeminjaman(idPeminjaman)).withSelfRel());
-
-        return new ResponseEntity<>(peminjaman, HttpStatus.OK);
+    public HttpEntity<Peminjaman> getPeminjaman(@PathVariable("idPeminjaman") String idPeminjaman) {
+        return new ResponseEntity<>(peminjamanService.getPeminjaman(idPeminjaman), HttpStatus.OK);
     }
 
 }
