@@ -44,6 +44,22 @@ Jika berhasil maka akan muncul access token dan refresh seperti berikut.
 }
 ```
 
+## Cara Akses API
+
+```
+curl "http://localhost:8080/api/bukus" \
+  -H "Authorization: Bearer <client_id>:<access_token>" \
+  -H "Content-Type: application/json"
+```
+
+Contohnya
+
+```
+curl "http://localhost:8080/api/bukus" \
+  -H "Authorization: Bearer clientid:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiY3VzdG9tb2F1dGgyIl0sInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdLCJleHAiOjE0ODYzOTEyNTUsImp0aSI6IjhkNzA2MjU1LWFhYzctNDI1Zi1iYjQ0LTc3MDJlYjlhYTFlNyIsImNsaWVudF9pZCI6ImNsaWVudGlkIn0.jAJTKoQsOCpXY_TE_0okO76uCQKeadI2b9VL7cFGqYc" \
+  -H "Content-Type: application/json"
+```
+
 ## Teknologi
 
 * Spring Boot
