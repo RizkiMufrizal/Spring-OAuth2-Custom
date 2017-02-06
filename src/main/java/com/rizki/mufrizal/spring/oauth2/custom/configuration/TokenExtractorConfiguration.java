@@ -1,9 +1,10 @@
 package com.rizki.mufrizal.spring.oauth2.custom.configuration;
 
+import com.rizki.mufrizal.spring.oauth2.custom.domain.OAuth2CountAccess;
+import com.rizki.mufrizal.spring.oauth2.custom.service.OAuth2AccessTokenService;
+import com.rizki.mufrizal.spring.oauth2.custom.service.OAuth2CountAccessService;
 import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
@@ -23,38 +24,22 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
  */
 public class TokenExtractorConfiguration implements TokenExtractor {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(TokenExtractorConfiguration.class);
+    private final OAuth2CountAccessService oAuth2CountAccessService;
+    private final OAuth2AccessTokenService oAuth2AccessTokenService;
+
+    public TokenExtractorConfiguration(OAuth2CountAccessService oAuth2CountAccessService, OAuth2AccessTokenService oAuth2AccessTokenService) {
+        this.oAuth2CountAccessService = oAuth2CountAccessService;
+        this.oAuth2AccessTokenService = oAuth2AccessTokenService;
+    }
 
     @Override
     public Authentication extract(HttpServletRequest request) {
-        String tokenValue = extractToken(request);
+        String tokenValue = extractHeaderToken(request);
         if (tokenValue != null) {
             PreAuthenticatedAuthenticationToken authentication = new PreAuthenticatedAuthenticationToken(tokenValue, "");
             return authentication;
         }
         return null;
-    }
-
-    protected String extractToken(HttpServletRequest request) {
-        String token = extractHeaderToken(request);
-
-        // bearer type allows a request parameter as well
-        if (token == null) {
-            LOGGER.debug("Token not found in headers. Trying request parameters.");
-            token = request.getParameter(OAuth2AccessToken.ACCESS_TOKEN);
-
-            System.out.println("oke boss");
-            System.out.println(token);
-            System.out.println("oke boss");
-
-            if (token == null) {
-                LOGGER.debug("Token not found in request parameters.  Not an OAuth2 request.");
-            } else {
-                request.setAttribute(OAuth2AuthenticationDetails.ACCESS_TOKEN_TYPE, OAuth2AccessToken.BEARER_TYPE);
-            }
-        }
-
-        return token;
     }
 
     /**
@@ -70,9 +55,29 @@ public class TokenExtractorConfiguration implements TokenExtractor {
             if ((value.toLowerCase().startsWith(OAuth2AccessToken.BEARER_TYPE.toLowerCase()))) {
                 String authHeaderValue = value.substring(OAuth2AccessToken.BEARER_TYPE.length()).trim();
 
-                System.out.println("oke boss");
-                System.out.println(authHeaderValue.split(":")[0]);
-                System.out.println("oke boss");
+                if (authHeaderValue.split(":")[0] == null) {
+                    return null;
+                }
+
+                String clientId = authHeaderValue.split(":")[0];
+
+                com.rizki.mufrizal.spring.oauth2.custom.domain.OAuth2AccessToken oAuth2AccessToken = oAuth2AccessTokenService.findByClientId(clientId);
+
+                if (oAuth2AccessToken == null) {
+                    return null;
+                }
+
+                OAuth2CountAccess oAuth2CountAccess = oAuth2CountAccessService.findByClientId(clientId);
+
+                if (oAuth2CountAccess == null) {
+                    OAuth2CountAccess countAccess = new OAuth2CountAccess();
+                    countAccess.setClientId(clientId);
+                    countAccess.setCountAccess(1);
+                    oAuth2CountAccessService.saveOAuth2CountAccess(countAccess);
+                } else {
+                    oAuth2CountAccess.setCountAccess(oAuth2CountAccess.getCountAccess() + 1);
+                    oAuth2CountAccessService.updateOAuth2CountAccess(oAuth2CountAccess);
+                }
 
                 request.setAttribute(OAuth2AuthenticationDetails.ACCESS_TOKEN_TYPE,
                         value.substring(0, OAuth2AccessToken.BEARER_TYPE.length()).trim());
