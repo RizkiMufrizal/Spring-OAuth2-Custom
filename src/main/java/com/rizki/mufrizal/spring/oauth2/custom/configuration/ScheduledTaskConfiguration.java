@@ -78,10 +78,10 @@ public class ScheduledTaskConfiguration {
             preparedStatementInsertOAuthClientDetails.setString(7, " ");
             preparedStatementInsertOAuthClientDetails.setInt(8, 3600);
             preparedStatementInsertOAuthClientDetails.setInt(9, 3600);
-            preparedStatementInsertOAuthClientDetails.setString(10, " ");
+            preparedStatementInsertOAuthClientDetails.setString(10, "{\"additional_param\":\"hello OAuth2\"}");
             preparedStatementInsertOAuthClientDetails.setBoolean(11, Boolean.TRUE);
             preparedStatementInsertOAuthClientDetails.executeUpdate();
-            
+
             preparedStatementInsertOAuthClientDetails.close();
         }
 
