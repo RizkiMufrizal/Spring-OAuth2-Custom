@@ -4,6 +4,7 @@ import com.rizki.mufrizal.spring.oauth2.custom.domain.OAuth2CountAccess;
 import com.rizki.mufrizal.spring.oauth2.custom.service.OAuth2AccessTokenService;
 import com.rizki.mufrizal.spring.oauth2.custom.service.OAuth2CountAccessService;
 import java.util.Enumeration;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -61,9 +62,9 @@ public class TokenExtractorConfiguration implements TokenExtractor {
 
                 String clientId = authHeaderValue.split(":")[0];
 
-                com.rizki.mufrizal.spring.oauth2.custom.domain.OAuth2AccessToken oAuth2AccessToken = oAuth2AccessTokenService.findByClientId(clientId);
+                List<com.rizki.mufrizal.spring.oauth2.custom.domain.OAuth2AccessToken> oAuth2AccessToken = oAuth2AccessTokenService.findByClientId(clientId);
 
-                if (oAuth2AccessToken == null) {
+                if (oAuth2AccessToken.isEmpty()) {
                     return null;
                 }
 

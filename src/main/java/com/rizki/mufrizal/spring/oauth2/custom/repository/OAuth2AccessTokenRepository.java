@@ -1,6 +1,7 @@
 package com.rizki.mufrizal.spring.oauth2.custom.repository;
 
 import com.rizki.mufrizal.spring.oauth2.custom.domain.OAuth2AccessToken;
+import java.util.List;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -16,6 +17,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface OAuth2AccessTokenRepository extends PagingAndSortingRepository<OAuth2AccessToken, String> {
 
-    OAuth2AccessToken findByClientId(String clientId);
+    List<OAuth2AccessToken> findByClientId(String clientId);
 
 }

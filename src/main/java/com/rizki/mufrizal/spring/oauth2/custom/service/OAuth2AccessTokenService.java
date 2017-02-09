@@ -1,6 +1,7 @@
 package com.rizki.mufrizal.spring.oauth2.custom.service;
 
 import com.rizki.mufrizal.spring.oauth2.custom.domain.OAuth2AccessToken;
+import java.util.List;
 
 /**
  *
@@ -15,6 +16,6 @@ import com.rizki.mufrizal.spring.oauth2.custom.domain.OAuth2AccessToken;
  */
 public interface OAuth2AccessTokenService {
 
-    public OAuth2AccessToken findByClientId(String clientId);
+    public List<OAuth2AccessToken> findByClientId(String clientId);
 
 }
