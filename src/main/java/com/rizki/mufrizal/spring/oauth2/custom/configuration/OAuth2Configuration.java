@@ -1,12 +1,13 @@
 package com.rizki.mufrizal.spring.oauth2.custom.configuration;
 
-import com.rizki.mufrizal.spring.oauth2.custom.service.OAuth2AccessTokenService;
+import com.rizki.mufrizal.spring.oauth2.custom.service.OAuth2AccessTokenRedis;
 import com.rizki.mufrizal.spring.oauth2.custom.service.OAuth2CountAccessService;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -17,8 +18,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 
 /**
@@ -45,11 +46,11 @@ public class OAuth2Configuration {
         private OAuth2CountAccessService oAuth2CountAccessService;
 
         @Autowired
-        private OAuth2AccessTokenService oAuth2AccessTokenService;
+        private OAuth2AccessTokenRedis oAuth2AccessTokenRedis;
 
         @Override
         public void configure(ResourceServerSecurityConfigurer resourceServerSecurityConfigurer) throws Exception {
-            TokenExtractorConfiguration tokenExtractorConfiguration = new TokenExtractorConfiguration(oAuth2CountAccessService, oAuth2AccessTokenService);
+            TokenExtractorConfiguration tokenExtractorConfiguration = new TokenExtractorConfiguration(oAuth2CountAccessService, oAuth2AccessTokenRedis);
             resourceServerSecurityConfigurer
                     .resourceId(RESOURCE_ID)
                     .tokenExtractor(tokenExtractorConfiguration);
@@ -77,6 +78,9 @@ public class OAuth2Configuration {
         @Autowired
         private DataSource dataSource;
 
+        @Autowired
+        private JedisConnectionFactory jedisConnectionFactory;
+
         @Bean
         public JwtAccessTokenConverter jwtAccessTokenConverter() {
             return new JwtAccessTokenConverter();
@@ -98,7 +102,7 @@ public class OAuth2Configuration {
 
         @Bean
         public TokenStore tokenStore() {
-            return new JdbcTokenStore(dataSource);
+            return new RedisTokenStore(jedisConnectionFactory);
         }
 
     }

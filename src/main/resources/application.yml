@@ -5,6 +5,19 @@ security:
             filter-order: 3
 
 spring:
+    
+    #konfigurasi redis
+    redis:
+        host: 127.0.0.1
+        port: 6379
+        max-total: 128
+        max-idle: 128
+        min-idle: 16
+        min-evictable-idle-time-millis: 60
+        time-between-eviction-runs-millis : 30
+        block-when-exhausted : true
+        use-pool: true
+    
     #konfigurasi jackson
     jackson:
         serialization:
@@ -15,7 +28,7 @@ spring:
         driver-class-name: org.mariadb.jdbc.Driver
         url: jdbc:mariadb://127.0.0.1:3306/customoauth2?autoReconnect=true
         username: root
-        password: root
+        password:
         poolName: SpringBootHikariCP
         maximumPoolSize: 5
         minimumIdle: 3

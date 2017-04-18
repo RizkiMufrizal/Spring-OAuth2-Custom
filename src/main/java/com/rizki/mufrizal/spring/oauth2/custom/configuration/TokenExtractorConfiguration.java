@@ -1,10 +1,10 @@
 package com.rizki.mufrizal.spring.oauth2.custom.configuration;
 
 import com.rizki.mufrizal.spring.oauth2.custom.domain.OAuth2CountAccess;
-import com.rizki.mufrizal.spring.oauth2.custom.service.OAuth2AccessTokenService;
+import com.rizki.mufrizal.spring.oauth2.custom.service.OAuth2AccessTokenRedis;
 import com.rizki.mufrizal.spring.oauth2.custom.service.OAuth2CountAccessService;
 import java.util.Enumeration;
-import java.util.List;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -26,11 +26,11 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 public class TokenExtractorConfiguration implements TokenExtractor {
 
     private final OAuth2CountAccessService oAuth2CountAccessService;
-    private final OAuth2AccessTokenService oAuth2AccessTokenService;
+    private final OAuth2AccessTokenRedis oAuth2AccessTokenRedis;
 
-    public TokenExtractorConfiguration(OAuth2CountAccessService oAuth2CountAccessService, OAuth2AccessTokenService oAuth2AccessTokenService) {
+    public TokenExtractorConfiguration(OAuth2CountAccessService oAuth2CountAccessService, OAuth2AccessTokenRedis oAuth2AccessTokenRedis) {
         this.oAuth2CountAccessService = oAuth2CountAccessService;
-        this.oAuth2AccessTokenService = oAuth2AccessTokenService;
+        this.oAuth2AccessTokenRedis = oAuth2AccessTokenRedis;
     }
 
     @Override
@@ -62,9 +62,8 @@ public class TokenExtractorConfiguration implements TokenExtractor {
 
                 String clientId = authHeaderValue.split(":")[0];
 
-                List<com.rizki.mufrizal.spring.oauth2.custom.domain.OAuth2AccessToken> oAuth2AccessToken = oAuth2AccessTokenService.findByClientId(clientId);
-
-                if (oAuth2AccessToken.isEmpty()) {
+                Set<byte[]> keyRedis = oAuth2AccessTokenRedis.getKeyRedis("client_id_to_access:" + clientId);
+                if (keyRedis.isEmpty()) {
                     return null;
                 }
 
