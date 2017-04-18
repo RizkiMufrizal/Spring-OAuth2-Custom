@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
@@ -27,71 +29,23 @@ import javax.persistence.Table;
 public class User implements Serializable {
 
     @Id
+    @Getter
+    @Setter
     @Column(name = "username", length = 50, nullable = false)
     private String username;
 
+    @Getter
+    @Setter
     @Column(name = "password", length = 100, nullable = false)
     private String password;
 
+    @Getter
+    @Setter
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
+    @Getter
+    @Setter
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "user")
     private Set<UserRole> userRoles = new HashSet<>();
-
-    /**
-     * @return the username
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * @param username the username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * @return the isActive
-     */
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    /**
-     * @param isActive the isActive to set
-     */
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    /**
-     * @return the userRoles
-     */
-    public Set<UserRole> getUserRoles() {
-        return userRoles;
-    }
-
-    /**
-     * @param userRoles the userRoles to set
-     */
-    public void setUserRoles(Set<UserRole> userRoles) {
-        this.userRoles = userRoles;
-    }
 }

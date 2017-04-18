@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
@@ -31,94 +33,34 @@ import org.hibernate.annotations.GenericGenerator;
 public class Peminjaman implements Serializable {
 
     @Id
+    @Getter
+    @Setter
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "id_peminjaman", length = 36)
     private String idPeminjaman;
 
+    @Getter
+    @Setter
     @Temporal(TemporalType.DATE)
     @Column(name = "tanggal_peminjaman")
     private Date tanggalPeminjaman;
 
+    @Getter
+    @Setter
     @Temporal(TemporalType.DATE)
     @Column(name = "tanggal_batas_pengembalian")
     private Date tanggalBatasPengembalian;
 
+    @Getter
+    @Setter
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinColumn(name = "npm", insertable = false, updatable = false, nullable = false)
     private Mahasiswa mahasiswa;
 
+    @Getter
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_buku")
     private Buku buku;
-
-    /**
-     * @return the idPeminjaman
-     */
-    public String getIdPeminjaman() {
-        return idPeminjaman;
-    }
-
-    /**
-     * @param idPeminjaman the idPeminjaman to set
-     */
-    public void setIdPeminjaman(String idPeminjaman) {
-        this.idPeminjaman = idPeminjaman;
-    }
-
-    /**
-     * @return the tanggalPeminjaman
-     */
-    public Date getTanggalPeminjaman() {
-        return tanggalPeminjaman;
-    }
-
-    /**
-     * @param tanggalPeminjaman the tanggalPeminjaman to set
-     */
-    public void setTanggalPeminjaman(Date tanggalPeminjaman) {
-        this.tanggalPeminjaman = tanggalPeminjaman;
-    }
-
-    /**
-     * @return the tanggalBatasPengembalian
-     */
-    public Date getTanggalBatasPengembalian() {
-        return tanggalBatasPengembalian;
-    }
-
-    /**
-     * @param tanggalBatasPengembalian the tanggalBatasPengembalian to set
-     */
-    public void setTanggalBatasPengembalian(Date tanggalBatasPengembalian) {
-        this.tanggalBatasPengembalian = tanggalBatasPengembalian;
-    }
-
-    /**
-     * @return the mahasiswa
-     */
-    public Mahasiswa getMahasiswa() {
-        return mahasiswa;
-    }
-
-    /**
-     * @param mahasiswa the mahasiswa to set
-     */
-    public void setMahasiswa(Mahasiswa mahasiswa) {
-        this.mahasiswa = mahasiswa;
-    }
-
-    /**
-     * @return the buku
-     */
-    public Buku getBuku() {
-        return buku;
-    }
-
-    /**
-     * @param buku the buku to set
-     */
-    public void setBuku(Buku buku) {
-        this.buku = buku;
-    }
 }

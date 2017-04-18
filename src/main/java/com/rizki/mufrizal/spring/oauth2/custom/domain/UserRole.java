@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
@@ -33,59 +35,23 @@ import org.hibernate.annotations.GenericGenerator;
 public class UserRole implements Serializable {
 
     @Id
+    @Getter
+    @Setter
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "user_role_id", length = 36, nullable = false)
     private String userRoleId;
 
+    @Getter
+    @Setter
     @Enumerated(EnumType.STRING)
     @Column(name = "role", length = 15, nullable = false)
     private Role role;
 
+    @Getter
+    @Setter
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinColumn(name = "username", nullable = false, foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
     private User user;
-
-    /**
-     * @return the userRoleId
-     */
-    public String getUserRoleId() {
-        return userRoleId;
-    }
-
-    /**
-     * @param userRoleId the userRoleId to set
-     */
-    public void setUserRoleId(String userRoleId) {
-        this.userRoleId = userRoleId;
-    }
-
-    /**
-     * @return the role
-     */
-    public Role getRole() {
-        return role;
-    }
-
-    /**
-     * @param role the role to set
-     */
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    /**
-     * @return the user
-     */
-    public User getUser() {
-        return user;
-    }
-
-    /**
-     * @param user the user to set
-     */
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

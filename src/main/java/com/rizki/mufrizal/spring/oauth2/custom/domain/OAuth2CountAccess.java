@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
@@ -24,56 +26,20 @@ import org.hibernate.annotations.GenericGenerator;
 public class OAuth2CountAccess implements Serializable {
 
     @Id
+    @Getter
+    @Setter
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "oauth_count_access")
     private String idOAuth2CountAccess;
 
+    @Getter
+    @Setter
     @Column(name = "count_access")
     private Integer countAccess;
 
+    @Getter
+    @Setter
     @Column(name = "client_id")
     private String clientId;
-
-    /**
-     * @return the idOAuth2CountAccess
-     */
-    public String getIdOAuth2CountAccess() {
-        return idOAuth2CountAccess;
-    }
-
-    /**
-     * @param idOAuth2CountAccess the idOAuth2CountAccess to set
-     */
-    public void setIdOAuth2CountAccess(String idOAuth2CountAccess) {
-        this.idOAuth2CountAccess = idOAuth2CountAccess;
-    }
-
-    /**
-     * @return the countAccess
-     */
-    public Integer getCountAccess() {
-        return countAccess;
-    }
-
-    /**
-     * @param countAccess the countAccess to set
-     */
-    public void setCountAccess(Integer countAccess) {
-        this.countAccess = countAccess;
-    }
-
-    /**
-     * @return the clientId
-     */
-    public String getClientId() {
-        return clientId;
-    }
-
-    /**
-     * @param clientId the clientId to set
-     */
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
 }
