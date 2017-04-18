@@ -3,6 +3,7 @@
 ## Cara Menjalankan :
 
 * jalankan database mariadb
+* jalankan redis
 * kemudian jalankan aplikasi dengan perintah `mvn clean spring-boot:run`
 
 ## Flow Client Credentials
@@ -64,6 +65,7 @@ curl "http://localhost:8080/api/bukus" \
 
 * Spring Boot
 * Spring Data JPA
+* Spring Data Redis
 * Spring Security
 * Spring OAuth2
 * Spring JWT
